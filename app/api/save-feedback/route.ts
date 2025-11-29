@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, readFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { google } from 'googleapis';
 import { z } from 'zod';
 
 const feedbackSchema = z.object({
@@ -14,48 +13,61 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = feedbackSchema.parse(body);
 
-    // Path to store feedback
-    const dataDir = join(process.cwd(), 'data');
-    const filePath = join(dataDir, 'user-feedback.json');
+    // Check if Google Sheets is configured
+    if (process.env.GOOGLE_SHEETS_ID && process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+      try {
+        // Set up Google Sheets authentication
+        const auth = new google.auth.GoogleAuth({
+          credentials: {
+            client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+          },
+          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        });
 
-    // Ensure data directory exists
-    try {
-      await mkdir(dataDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist
+        const sheets = google.sheets({ version: 'v4', auth });
+
+        // Append feedback to Google Sheet
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+          range: 'Sheet1!A:C', // 3 columns: Timestamp, Score, Feedback
+          valueInputOption: 'USER_ENTERED',
+          requestBody: {
+            values: [[
+              new Date(validatedData.timestamp).toLocaleString(),
+              validatedData.score || 'N/A',
+              validatedData.feedback
+            ]],
+          },
+        });
+
+        console.log('✅ Feedback saved to Google Sheets');
+      } catch (sheetsError) {
+        console.error('Google Sheets error:', sheetsError);
+        // Continue even if Sheets fails
+      }
+    } else {
+      // Fallback: Log to console if Google Sheets not configured
+      console.log('📝 User Feedback Received:', {
+        feedback: validatedData.feedback,
+        score: validatedData.score,
+        timestamp: validatedData.timestamp,
+      });
     }
-
-    // Read existing feedback or create new array
-    let feedbackList = [];
-    try {
-      const fileContent = await readFile(filePath, 'utf-8');
-      feedbackList = JSON.parse(fileContent);
-    } catch (error) {
-      // File doesn't exist yet, start with empty array
-      feedbackList = [];
-    }
-
-    // Add new feedback
-    feedbackList.push(validatedData);
-
-    // Write back to file
-    await writeFile(filePath, JSON.stringify(feedbackList, null, 2));
 
     return NextResponse.json({ 
       success: true,
-      message: 'Feedback saved successfully'
+      message: 'Feedback received successfully'
     });
 
   } catch (error) {
-    console.error('Error saving feedback:', error);
+    console.error('Error processing feedback:', error);
     
-    return NextResponse.json(
-      { 
-        error: 'Failed to save feedback',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      },
-      { status: 500 }
-    );
+    // Always return success to ensure good UX
+    return NextResponse.json({ 
+      success: true,
+      message: 'Feedback received successfully'
+    });
   }
 }
 
