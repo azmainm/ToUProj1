@@ -10,7 +10,17 @@ export interface QuizQuestion {
   options: QuizOption[];
 }
 
-export const quizQuestions: QuizQuestion[] = [
+// Helper function to shuffle array
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+const baseQuestions: QuizQuestion[] = [
   {
     id: 1,
     question: "Of course we stuff ourselves, but maybe we get just too much food. How much would you say ends up going in the rubbish?",
@@ -221,5 +231,13 @@ export const quizQuestions: QuizQuestion[] = [
       }
     ]
   }
-].sort(() => Math.random() - 0.5) as QuizQuestion[]; // Randomize question order
+];
+
+// Randomize both question order AND option order within each question
+export const quizQuestions: QuizQuestion[] = baseQuestions
+  .map(question => ({
+    ...question,
+    options: shuffleArray(question.options) // Randomize option order
+  }))
+  .sort(() => Math.random() - 0.5); // Randomize question order
 
