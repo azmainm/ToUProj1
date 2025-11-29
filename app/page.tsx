@@ -1,9 +1,31 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles, Gift, TreePine, Heart, Snowflake, Star } from "lucide-react";
+import { Sparkles, Gift, TreePine, Heart, Snowflake, Star, Mail, Copy } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { toast } from "sonner";
+
+const teamMembers = [
+  { name: "Azmain Morshed", email: "azmainmorshed03@gmail.com" },
+  { name: "Lins Karnes", email: "azmainmorshed03@gmail.com" },
+  { name: "Hristina Bojkova", email: "azmainmorshed03@gmail.com" },
+  { name: "Robin Rabea Wirth", email: "azmainmorshed03@gmail.com" },
+  { name: "Kevin Jimenez Vergara", email: "azmainmorshed03@gmail.com" },
+];
 
 export default function Home() {
+  const handleCopyEmail = (email: string, name: string) => {
+    navigator.clipboard.writeText(email);
+    toast.success(`Copied ${name}'s email!`, {
+      description: email,
+    });
+  };
   return (
     <main className="min-h-screen pt-16">
       {/* Hero Section */}
@@ -63,38 +85,45 @@ export default function Home() {
                 <Heart className="size-4" />
                 About This Guide
               </div>
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl text-foreground">
                 Sustainable Celebrations
               </h2>
             </div>
             
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardContent className="p-8 md:p-12">
+            <Card className="relative overflow-hidden border-2 border-border/50 hover:border-primary/30 hover:shadow-2xl transition-all duration-300 group">
+              {/* Decorative gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Decorative corner elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-secondary/10 to-transparent rounded-tr-full" />
+              
+              <CardContent className="relative p-8 md:p-12">
                 <div className="space-y-6 text-lg leading-relaxed">
-                  <p>
+                  <p className="text-foreground font-medium first-letter:text-4xl first-letter:font-bold first-letter:text-primary first-letter:mr-1 first-letter:float-left">
                     The holidays. A time of indulgence, kicking back and enjoying family friends and some free time. 
                     A time for partying and perhaps some excessive spending too…?
                   </p>
                   
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground pl-4 border-l-4 border-secondary/30">
                     Caught up in the moment sometimes we forget about how the choices we make or the things we do 
-                    can have an effect on the wider planet. That's why we've created this 'Micro Sustainability 
-                    Impact Guide' (Xmas version) to help guide you to enjoying this time whilst also living sustainably.
+                    can have an effect on the wider planet. That&apos;s why we&apos;ve created this &apos;Micro Sustainability 
+                    Impact Guide&apos; (Xmas version) to help guide you to enjoying this time whilst also living sustainably.
                   </p>
                 </div>
                 
-                <div className="mt-8 flex flex-wrap gap-4 justify-center">
-                  <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                    <TreePine className="size-4" />
-                    Eco-Friendly
+                <div className="mt-10 flex flex-wrap gap-4 justify-center">
+                  <div className="group/tag flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 px-5 py-2.5 text-sm font-medium text-primary border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all cursor-default">
+                    <TreePine className="size-4 group-hover/tag:scale-110 transition-transform" />
+                    <span>Eco-Friendly</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-full bg-secondary/10 px-4 py-2 text-sm font-medium text-secondary">
-                    <Gift className="size-4" />
-                    Mindful Giving
+                  <div className="group/tag flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary/10 to-secondary/5 px-5 py-2.5 text-sm font-medium text-secondary border border-secondary/20 hover:border-secondary/40 hover:shadow-md transition-all cursor-default">
+                    <Gift className="size-4 group-hover/tag:scale-110 transition-transform" />
+                    <span>Mindful Giving</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                    <Heart className="size-4" />
-                    Sustainable Living
+                  <div className="group/tag flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 px-5 py-2.5 text-sm font-medium text-primary border border-primary/20 hover:border-primary/40 hover:shadow-md transition-all cursor-default">
+                    <Heart className="size-4 group-hover/tag:scale-110 transition-transform" />
+                    <span>Sustainable Living</span>
                   </div>
                 </div>
               </CardContent>
@@ -107,7 +136,7 @@ export default function Home() {
       <section className="py-20 md:py-28 bg-gradient-to-br from-secondary/10 via-primary/10 to-background">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
+            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl text-foreground">
               Ready to see how sustainable you are?
             </h2>
             <p className="mb-8 text-lg text-muted-foreground">
@@ -136,7 +165,7 @@ export default function Home() {
             
             <div>
               <p className="text-sm text-muted-foreground mb-2">
-                © 2025 ToU MsC SIT Group
+                © 2025 Tomorrow University of Applied Sciences MsC Sustainability, Innovation & Technology Group
               </p>
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium mb-2 text-foreground">Created with 💚 by:</p>
@@ -145,6 +174,61 @@ export default function Home() {
                   Lins Karnes, Kevin Jimenez Vergara
                 </p>
               </div>
+            </div>
+            
+            {/* Contact Us Button with Hover Card */}
+            <div className="flex flex-col items-center gap-2 pt-2">
+              <HoverCard openDelay={0} closeDelay={100}>
+                <HoverCardTrigger asChild>
+                  <Button
+                    size="sm"
+                    className="group bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Mail className="mr-2 size-4" />
+                    Contact Us
+                    <Sparkles className="ml-2 size-3 opacity-70" />
+                  </Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80" align="center">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 pb-3 border-b">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <Mail className="size-4 text-primary" />
+                      </div>
+                      <h4 className="font-bold text-base">Team Contacts</h4>
+                    </div>
+                    <div className="space-y-3">
+                      {teamMembers.map((member, index) => (
+                        <div key={index} className="flex items-center justify-between gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                          <div className="flex flex-col gap-1 flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">
+                              {member.name}
+                            </p>
+                            <a
+                              href={`mailto:${member.email}`}
+                              className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 truncate"
+                            >
+                              <Mail className="size-3 flex-shrink-0" />
+                              <span className="truncate">{member.email}</span>
+                            </a>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 w-8 p-0 flex-shrink-0 hover:bg-primary/10 hover:text-primary"
+                            onClick={() => handleCopyEmail(member.email, member.name)}
+                          >
+                            <Copy className="size-3.5" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+              <p className="text-xs text-muted-foreground/60">
+                Click to see contact details
+              </p>
             </div>
             
             <div className="pt-4 border-t border-border/50">

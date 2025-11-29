@@ -13,213 +13,213 @@ export interface QuizQuestion {
 export const quizQuestions: QuizQuestion[] = [
   {
     id: 1,
-    question: "How do you plan to wrap your Christmas gifts this year?",
+    question: "Of course we stuff ourselves, but maybe we get just too much food. How much would you say ends up going in the rubbish?",
     options: [
       {
-        text: "Reusable fabric wraps or recycled paper",
+        text: "Hardly any",
         impact: 'low',
-        feedback: "Excellent choice! Reusable wraps can be used year after year, and recycled paper significantly reduces waste. You're setting a great sustainable example! 🎁♻️"
+        feedback: "Fantastic! Minimizing food waste is one of the most impactful things you can do. You're preventing methane emissions from landfills and making the most of your resources! 🌱"
       },
       {
-        text: "Regular wrapping paper that I'll recycle",
+        text: "Not too much really",
         impact: 'medium',
-        feedback: "Good thinking about recycling! However, many wrapping papers can't be recycled due to glitter, foil, or lamination. Consider reusable alternatives next time! 📦"
+        feedback: "Good awareness! There's still room to improve. Try planning portions better and composting unavoidable scraps. Every bit of food saved makes a difference! ♻️"
       },
       {
-        text: "Glossy or glittery wrapping paper",
+        text: "Probably too much",
         impact: 'high',
-        feedback: "While beautiful, glossy and glittered papers often can't be recycled and end up in landfills. Try fabric wraps or brown paper decorated with natural items instead! ✨"
+        feedback: "Food waste is a major issue! Try planning portions better, storing food properly, and composting scraps. Wasted food means wasted resources and greenhouse gas emissions. 🍽️"
       }
     ]
   },
   {
     id: 2,
-    question: "What type of Christmas tree will you choose?",
+    question: "Nom nom loads of this good stuff flying about. Which one of these best describes you:",
     options: [
       {
-        text: "A potted tree I can plant or reuse",
+        text: "It's not really my thing",
         impact: 'low',
-        feedback: "Perfect! A living tree can continue growing and absorbing CO2 for years. This is one of the most sustainable choices you can make! 🌲💚"
+        feedback: "Interesting choice! Reducing chocolate consumption can lower your carbon footprint, especially since cocoa production has environmental impacts. Every mindful choice counts! 🌿"
       },
       {
-        text: "A locally-grown real tree for composting after",
+        text: "I eat some and when I do I'm mindful of its source",
         impact: 'medium',
-        feedback: "Great choice! Real trees from local farms are carbon-neutral when composted properly. Just make sure to recycle it at a local collection point! 🎄"
+        feedback: "Great approach! Being mindful about chocolate sources supports sustainable farming. Look for Fair Trade and organic certifications for even better impact! 🍫"
       },
       {
-        text: "An artificial tree (new purchase)",
+        text: "I eat all the chocolate, get it in my belly",
         impact: 'high',
-        feedback: "Artificial trees are made from plastics and need to be used for 10+ years to offset their carbon footprint. If you already own one, keep using it! If buying, consider a real tree instead. 🌟"
+        feedback: "We love chocolate too! But mass-produced chocolate often has a large environmental footprint. Try choosing quality over quantity and look for sustainably sourced options! 🌍"
       }
     ]
   },
   {
     id: 3,
-    question: "How will you light up your home for the holidays?",
+    question: "We get it, It's the party season, you might want to look your best and get some new outfits:",
     options: [
       {
-        text: "LED lights on timers",
+        text: "I'm good, I have enough",
         impact: 'low',
-        feedback: "Brilliant! LED lights use 80% less energy than traditional bulbs, and timers ensure you're not wasting electricity. You're lighting up sustainably! 💡✨"
+        feedback: "Excellent mindset! Fast fashion is one of the biggest polluters. Using what you already have is incredibly sustainable and shows true style comes from within! 👗✨"
       },
       {
-        text: "LED lights without timers",
+        text: "I might get some new things for one or two parties",
         impact: 'medium',
-        feedback: "Good choice with LEDs! Consider adding timers to automatically turn them off—this can save even more energy and reduce your carbon footprint. ⏰"
+        feedback: "Moderation is good! If you do buy new items, consider secondhand shops or sustainable brands. Quality pieces you'll wear again are better than cheap, one-time outfits! 🛍️"
       },
       {
-        text: "Traditional incandescent lights",
+        text: "Of course, I splash out on outfits, costumes, Santa hats for everyone!",
         impact: 'high',
-        feedback: "Traditional lights use significantly more energy and have shorter lifespans. Switching to LEDs could reduce your holiday lighting energy by up to 80%! 💫"
+        feedback: "The fashion industry has a huge environmental impact! Consider borrowing, renting, or buying secondhand. Investing in versatile pieces you'll wear beyond the holidays is much more sustainable! 🎅"
       }
     ]
   },
   {
     id: 4,
-    question: "What's your approach to Christmas dinner shopping?",
+    question: "We are all looking forward to the presents under the Christmas tree. How adventurous were you when buying them?",
     options: [
       {
-        text: "Local, seasonal, and mostly plant-based foods",
+        text: "Very adventurous! I was brave enough and bought them in my local stores",
         impact: 'low',
-        feedback: "Outstanding! Local and seasonal foods have minimal transport emissions, and plant-based options significantly reduce your carbon footprint. Delicious and sustainable! 🥗🌱"
+        feedback: "Wonderful! Shopping locally supports your community, reduces shipping emissions, and often means better quality products. You're a sustainability champion! 🏪🎁"
       },
       {
-        text: "A mix of local and imported foods",
+        text: "This year I didn't need to buy anything - had quite the good time on the Christmas markets though :)",
+        impact: 'low',
+        feedback: "Perfect! Experiencing Christmas markets and giving time or experiences instead of material goods is incredibly sustainable. Memories last longer than things! 🎄✨"
+      },
+      {
+        text: "Nah, Christmas days themselves are adventurous enough, bought everything online",
         impact: 'medium',
-        feedback: "Not bad! Prioritizing local options where possible helps. Try planning meals around seasonal produce to reduce your impact even further. 🍽️"
-      },
-      {
-        text: "Whatever looks good, regardless of origin",
-        impact: 'high',
-        feedback: "Consider that imported foods, especially air-freighted items, have a much larger carbon footprint. Shopping local and seasonal makes a big difference! 🌍"
+        feedback: "Online shopping is convenient, but multiple deliveries increase carbon emissions. Try consolidating orders or choosing local pickup options when possible! 📦"
       }
     ]
   },
   {
     id: 5,
-    question: "How do you handle leftover food after holiday meals?",
+    question: "Seeing all the presents under the tree and guessing what each package contains is part of the fun, or how do you see it?",
     options: [
       {
-        text: "Plan portions carefully and compost scraps",
+        text: "We discovered other fun ways to hand over presents - don't need wrapping anymore",
         impact: 'low',
-        feedback: "Excellent planning! Reducing food waste and composting scraps prevents methane emissions from landfills. You're a sustainability star! ⭐♻️"
+        feedback: "Brilliant innovation! Skipping wrapping entirely is the ultimate sustainable choice. Creative presentation using reusable bags or boxes works just as well! 🎁💚"
       },
       {
-        text: "Save leftovers but some food gets wasted",
+        text: "The inner things matter - I'll wrap my presents in whatever I can find at home",
         impact: 'medium',
-        feedback: "Saving leftovers is great! Try meal planning and freezing extras to avoid waste. Food waste in landfills produces methane, a potent greenhouse gas. 🥡"
+        feedback: "Great resourcefulness! Using materials you already have reduces waste significantly. Newspaper, fabric scraps, or brown paper can look beautiful too! ♻️"
       },
       {
-        text: "Often throw away uneaten food",
+        text: "Of course everything is picture perfect and in sparkly Christmas wrapping paper",
         impact: 'high',
-        feedback: "Food waste is a major environmental issue! Try planning portions better, and compost unavoidable scraps. Every bit saved makes a difference. 🍴"
+        feedback: "Glossy and glittered papers often can't be recycled and create tons of waste. Try reusable fabric wraps or recyclable kraft paper decorated with natural items! ✨"
       }
     ]
   },
   {
     id: 6,
-    question: "What kind of gifts are you giving this year?",
+    question: "Curious about the impact of you getting around? Ok, how do you tend to get to places during the holiday season?",
     options: [
       {
-        text: "Experiences, handmade items, or secondhand goods",
+        text: "Surely I don't want to be stuck in traffic, I do 500 km or less in a combination of bus, train and car",
         impact: 'low',
-        feedback: "Wonderful! Experience gifts create memories without material waste, and secondhand/handmade items reduce manufacturing impact. Truly thoughtful giving! 🎨💝"
+        feedback: "Excellent transport choices! Combining public transit with minimal car use for shorter distances significantly reduces your carbon footprint. Smart and sustainable! 🚆🌱"
       },
       {
-        text: "New items from sustainable/ethical brands",
+        text: "I don't need to go far, so I hop into the car with myself or me and my friend and drive less than 500 km there and back to the in-laws",
         impact: 'medium',
-        feedback: "Good thinking! Supporting ethical brands matters. Consider experiences or secondhand items too—they often mean more and have less environmental impact. 🎁"
+        feedback: "Keeping distances short helps! Carpooling is better than driving alone. For even more impact, consider if some trips could be done by train or bus! 🚗"
       },
       {
-        text: "Mostly new items from fast fashion/cheap retailers",
+        text: "If I don't have at least two flights, it's not Christmas, more than 1,000 km",
         impact: 'high',
-        feedback: "Fast fashion and cheap goods often have significant environmental and ethical costs. Consider quality over quantity, or experience-based gifts instead! 🛍️"
+        feedback: "Aviation is one of the highest-impact forms of travel! If possible, consider reducing flight frequency, choosing direct routes, or exploring closer destinations. Every flight counts! ✈️"
       }
     ]
   },
   {
     id: 7,
-    question: "How are you traveling to see family and friends?",
+    question: "The sun sets earlier again and it's dark outside…",
     options: [
       {
-        text: "Walking, cycling, or public transport",
+        text: "I'm a vampire, I don't need sun or artificial light, in the dark I feel best",
         impact: 'low',
-        feedback: "Amazing! Active and public transport have the lowest carbon emissions. Plus, you're getting exercise and avoiding traffic stress. Win-win! 🚲🚆"
+        feedback: "Love the humor! Minimizing artificial lighting is actually great for the environment. Natural light when possible and darkness when appropriate saves energy! 🌙✨"
       },
       {
-        text: "Carpooling or driving an electric/hybrid vehicle",
+        text: "I miss the sun already, so when she actually appears I wanna see her - I put lights on only at night as a compensation :)",
         impact: 'medium',
-        feedback: "Smart choice! Sharing rides or using efficient vehicles significantly reduces emissions per person. Consider public transport for longer trips too! 🚗"
+        feedback: "Balanced approach! Using lights only at night saves energy. Consider LED bulbs and timers to optimize your lighting even further! 💡"
       },
       {
-        text: "Flying or driving alone in a conventional car",
+        text: "Yes, isn't it awesome? I can turn on all my sparkly lights and see them day and night",
         impact: 'high',
-        feedback: "Transportation is a major source of holiday emissions. If possible, consider carpooling, trains, or video calls for distant relatives. Every journey counts! ✈️"
+        feedback: "While festive lights are beautiful, running them 24/7 uses significant energy! Try using timers and LEDs, and enjoy them only during evening hours. ⚡"
       }
     ]
   },
   {
     id: 8,
-    question: "What's your strategy for Christmas cards?",
+    question: "How about the way your things are getting around? What is your estimation of the kilometers travelled by your presents?",
     options: [
       {
-        text: "E-cards or no cards, using video messages instead",
+        text: "We got tired of presents, so only small children get presents in our family, probably under 500",
         impact: 'low',
-        feedback: "Perfect! Digital greetings have zero waste and can be just as personal. You're embracing the future of festive communication! 📱💌"
+        feedback: "Wonderful approach! Reducing gift-giving to essentials dramatically cuts shipping emissions and consumption. Focusing on experiences over things is truly sustainable! 🎁🌱"
       },
       {
-        text: "Recycled paper cards sent to close family only",
+        text: "I shop presents in city shops for family and close friends",
         impact: 'medium',
-        feedback: "Thoughtful approach! Recycled cards are better, and limiting recipients reduces impact. Consider if some folks might appreciate a video message instead! ✉️"
+        feedback: "Great choice! Local shopping reduces shipping emissions and supports your community. You're keeping things personal while minimizing environmental impact! 🏪"
       },
       {
-        text: "Traditional cards sent to many people",
+        text: "I love special presents! Buying them, getting them, sending half of them back! More than 1,000 km",
         impact: 'high',
-        feedback: "Traditional cards create significant paper waste and transport emissions. Digital alternatives can be just as meaningful and much more eco-friendly! 💳"
+        feedback: "Long-distance shipping and returns have massive carbon footprints! Try shopping locally or choosing experiences. Every kilometer saved makes a real difference! 📦✈️"
       }
     ]
   },
   {
     id: 9,
-    question: "How do you approach party decorations?",
+    question: "Looking for a way to keep fit while doing daily errands? How do you estimate your preferred mode of going about your daily tasks in the city?",
     options: [
       {
-        text: "Reusable decorations and natural items",
+        text: "I love to be active, cycling or walking, when it gets too cold I hop on to the bus",
         impact: 'low',
-        feedback: "Fantastic! Reusable decor lasts for years, and natural items like pinecones and branches are biodegradable. Your home looks great and green! 🌿✨"
+        feedback: "Outstanding! Active transport keeps you healthy and has zero emissions. Using public transit when needed is the perfect sustainable combination! 🚴‍♀️🌱"
       },
       {
-        text: "Mix of reusable and some new eco-friendly items",
+        text: "It depends on my schedule really, half is public transport + walking, half car or car sharing",
         impact: 'medium',
-        feedback: "Good balance! When buying new, choose quality items you'll use for years. DIY decorations from natural materials can be beautiful and sustainable too! 🎀"
+        feedback: "Balanced approach! You're already reducing emissions by combining transport modes. Try increasing the public transport ratio when possible! 🚌"
       },
       {
-        text: "New plastic decorations each year",
+        text: "It's me getting to the garage and into my car, what else",
         impact: 'high',
-        feedback: "Single-use plastic decorations contribute to waste and pollution. Invest in quality reusable items or make decorations from natural materials instead! 🎊"
+        feedback: "Cars are convenient but have high environmental impact for short city trips! Try walking, cycling, or public transit for errands—it's healthier and more sustainable! 🚗"
       }
     ]
   },
   {
     id: 10,
-    question: "What's your plan for post-holiday cleanup?",
+    question: "We all know the classic mountain of leftovers after a big meal. What do you usually do?",
     options: [
       {
-        text: "Recycle properly, compost, and donate unwanted items",
+        text: "I portion well and almost nothing goes to waste",
         impact: 'low',
-        feedback: "Exemplary! Proper recycling, composting, and donating extends the life of items and keeps waste from landfills. You're ending the season sustainably! 🌟♻️"
+        feedback: "Excellent planning! Proper portioning prevents food waste and saves resources. You're making the most of every ingredient while reducing landfill methane! 🌟🍽️"
       },
       {
-        text: "Recycle what I can, rest goes to trash",
+        text: "I plan meals okay and repurpose leftovers when I can",
         impact: 'medium',
-        feedback: "Recycling is great! Take it further by composting organic waste and donating usable items. Many communities have special holiday recycling programs too! 🗑️"
+        feedback: "Good effort! Repurposing leftovers is great. Take it further by planning portions more carefully and composting unavoidable scraps! 🥡"
       },
       {
-        text: "Everything goes in the trash",
+        text: "I cook way too much and lots ends up uneaten",
         impact: 'high',
-        feedback: "There's lots of potential here! Most holiday waste can be recycled, composted, or donated. Check local programs for tree recycling and proper disposal options. 🌍"
+        feedback: "Food waste has a huge environmental impact! Try planning portions better, properly storing food, and composting scraps. Your wallet and the planet will thank you! 🍴"
       }
     ]
   }
-];
+].sort(() => Math.random() - 0.5) as QuizQuestion[]; // Randomize question order
 

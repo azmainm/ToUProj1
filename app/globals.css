@@ -47,11 +47,11 @@
   --radius: 0.625rem;
   /* Christmas theme - off-white background with festive reds and greens */
   --background: oklch(0.98 0.002 90);
-  --foreground: oklch(0.2 0.01 20);
+  --foreground: oklch(0.35 0.01 20); /* Softer gray-black instead of pure black */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.01 20);
+  --card-foreground: oklch(0.35 0.01 20); /* Softer gray-black */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.01 20);
+  --popover-foreground: oklch(0.35 0.01 20); /* Softer gray-black */
   --primary: oklch(0.55 0.18 25); /* Christmas red */
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.48 0.12 145); /* Christmas green */

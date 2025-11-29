@@ -5,26 +5,38 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { quizQuestions, type QuizOption } from "@/lib/quiz-data";
-import { ChevronLeft, ChevronRight, TreePine, Sparkles, Award } from "lucide-react";
+import { ChevronLeft, ChevronRight, TreePine, Sparkles, Award, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+
+interface AnswerRecord {
+  question: string;
+  selectedOption: string;
+  impact: 'low' | 'medium' | 'high';
+  feedback: string;
+}
 
 export default function TestPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<QuizOption | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [answers, setAnswers] = useState<QuizOption[]>([]);
+  const [answers, setAnswers] = useState<AnswerRecord[]>([]);
+  const [currentFeedback, setCurrentFeedback] = useState<string>("");
+  const [isGeneratingFeedback, setIsGeneratingFeedback] = useState(false);
+  const [finalSummary, setFinalSummary] = useState<string | null>(null);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
   const question = quizQuestions[currentQuestion];
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
   const isLastQuestion = currentQuestion === quizQuestions.length - 1;
   const isFirstQuestion = currentQuestion === 0;
 
-  const handleOptionSelect = (option: QuizOption) => {
+  const handleOptionSelect = async (option: QuizOption) => {
     if (isFlipped) return; // Prevent selecting after flip
     
     setSelectedOption(option);
     setIsFlipped(true);
+    setIsGeneratingFeedback(true);
     
     // Show toast based on impact
     if (option.impact === 'low') {
@@ -40,26 +52,98 @@ export default function TestPage() {
         description: "Let's find more sustainable alternatives! 🌍",
       });
     }
+
+    // Try to get AI-generated feedback
+    try {
+      const response = await fetch('/api/generate-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: question.question,
+          options: question.options.map(opt => ({ text: opt.text, impact: opt.impact })),
+          selectedOption: { text: option.text, impact: option.impact }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentFeedback(data.feedback);
+      } else {
+        throw new Error('API failed');
+      }
+    } catch (error) {
+      // Fallback to hardcoded feedback
+      setCurrentFeedback(option.feedback);
+    } finally {
+      setIsGeneratingFeedback(false);
+    }
   };
 
-  const handleNext = () => {
-    if (!selectedOption) return;
+  const handleNext = async () => {
+    if (!selectedOption || !currentFeedback) return;
     
-    setAnswers([...answers, selectedOption]);
+    // Store the answer with the feedback (AI or hardcoded)
+    const newAnswer: AnswerRecord = {
+      question: question.question,
+      selectedOption: selectedOption.text,
+      impact: selectedOption.impact,
+      feedback: currentFeedback
+    };
+    
+    const updatedAnswers = [...answers, newAnswer];
+    setAnswers(updatedAnswers);
     
     if (isLastQuestion) {
-      // Quiz completed - could navigate to results page
-      const lowImpactCount = [...answers, selectedOption].filter(a => a.impact === 'low').length;
-      const score = Math.round((lowImpactCount / quizQuestions.length) * 100);
+      // Generate final AI summary
+      setIsGeneratingSummary(true);
+      
+      const lowImpact = updatedAnswers.filter(a => a.impact === 'low').length;
+      const mediumImpact = updatedAnswers.filter(a => a.impact === 'medium').length;
+      const highImpact = updatedAnswers.filter(a => a.impact === 'high').length;
+      const score = Math.round((lowImpact / quizQuestions.length) * 100);
       
       toast.success(`Quiz Complete! Your sustainability score: ${score}%`, {
         description: score >= 70 ? "You're a sustainability champion! 🏆" : score >= 40 ? "You're on the right track! Keep learning! 🌱" : "Every journey starts with a single step! 🌍",
         duration: 5000,
       });
+
+      // Try to get AI-generated summary
+      try {
+        const response = await fetch('/api/generate-summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            answers: updatedAnswers,
+            score,
+            lowImpact,
+            mediumImpact,
+            highImpact
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setFinalSummary(data.summary);
+        } else {
+          throw new Error('API failed');
+        }
+      } catch (error) {
+        // Fallback to hardcoded summary
+        if (score >= 70) {
+          setFinalSummary("Excellent work! You're already making fantastic sustainable choices this holiday season. Keep inspiring others with your eco-friendly practices! Share your knowledge and help others make better choices too. 🏆");
+        } else if (score >= 40) {
+          setFinalSummary("You're on the right track! You've made some great sustainable choices, and there's opportunity to do even more. Review the feedback from the quiz and try implementing one new sustainable practice this holiday season. Every small change counts! 🌱");
+        } else {
+          setFinalSummary("Every sustainability journey starts with awareness, and you've taken the first step! Use the insights from this quiz to make small changes in your holiday habits. Even changing one or two practices can make a real difference. You've got this! 🌍");
+        }
+      } finally {
+        setIsGeneratingSummary(false);
+      }
     } else {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedOption(null);
       setIsFlipped(false);
+      setCurrentFeedback("");
     }
   };
 
@@ -69,16 +153,16 @@ export default function TestPage() {
     setCurrentQuestion(currentQuestion - 1);
     setSelectedOption(null);
     setIsFlipped(false);
+    setCurrentFeedback("");
     if (answers.length > 0) {
       setAnswers(answers.slice(0, -1));
     }
   };
 
   const calculateResults = () => {
-    const allAnswers = [...answers, selectedOption].filter(Boolean) as QuizOption[];
-    const lowImpact = allAnswers.filter(a => a.impact === 'low').length;
-    const mediumImpact = allAnswers.filter(a => a.impact === 'medium').length;
-    const highImpact = allAnswers.filter(a => a.impact === 'high').length;
+    const lowImpact = answers.filter(a => a.impact === 'low').length;
+    const mediumImpact = answers.filter(a => a.impact === 'medium').length;
+    const highImpact = answers.filter(a => a.impact === 'high').length;
     const score = Math.round((lowImpact / quizQuestions.length) * 100);
     
     return { lowImpact, mediumImpact, highImpact, score };
@@ -102,7 +186,7 @@ export default function TestPage() {
     }
   };
 
-  if (isLastQuestion && selectedOption && isFlipped) {
+  if (answers.length === quizQuestions.length) {
     const results = calculateResults();
     
     return (
@@ -113,7 +197,7 @@ export default function TestPage() {
               <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary">
                 <Award className="size-10 text-white" />
               </div>
-              <h1 className="text-4xl font-bold mb-4">Quiz Complete!</h1>
+              <h1 className="text-4xl font-bold mb-4 text-foreground">Quiz Complete!</h1>
               <p className="text-xl text-muted-foreground">Here's your sustainability report</p>
             </div>
 
@@ -148,25 +232,14 @@ export default function TestPage() {
                   <Sparkles className="size-5 text-primary" />
                   Your Sustainability Journey
                 </h3>
-                {results.score >= 70 && (
+                {isGeneratingSummary ? (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Loader2 className="size-5 animate-spin" />
+                    <span>Generating your personalized sustainability report...</span>
+                  </div>
+                ) : (
                   <p className="text-muted-foreground">
-                    Excellent work! You're already making fantastic sustainable choices this holiday season. 
-                    Keep inspiring others with your eco-friendly practices! Share your knowledge and help 
-                    others make better choices too. 🏆
-                  </p>
-                )}
-                {results.score >= 40 && results.score < 70 && (
-                  <p className="text-muted-foreground">
-                    You're on the right track! You've made some great sustainable choices, and there's 
-                    opportunity to do even more. Review the feedback from the quiz and try implementing 
-                    one new sustainable practice this holiday season. Every small change counts! 🌱
-                  </p>
-                )}
-                {results.score < 40 && (
-                  <p className="text-muted-foreground">
-                    Every sustainability journey starts with awareness, and you've taken the first step! 
-                    Use the insights from this quiz to make small changes in your holiday habits. Even 
-                    changing one or two practices can make a real difference. You've got this! 🌍
+                    {finalSummary}
                   </p>
                 )}
               </div>
@@ -185,7 +258,9 @@ export default function TestPage() {
                   setCurrentQuestion(0);
                   setSelectedOption(null);
                   setIsFlipped(false);
+                  setCurrentFeedback("");
                   setAnswers([]);
+                  setFinalSummary(null);
                   toast.info("Let's try again!", { description: "See if you can improve your score! 🎯" });
                 }}
               >
@@ -218,7 +293,7 @@ export default function TestPage() {
 
           {/* Question Card */}
           <div className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 px-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 px-4 text-foreground">
               {question.question}
             </h2>
 
@@ -264,9 +339,16 @@ export default function TestPage() {
                             {selectedOption.impact.toUpperCase()} IMPACT
                           </div>
                         </div>
-                        <p className="text-base md:text-lg leading-relaxed max-w-2xl px-4">
-                          {selectedOption.feedback}
-                        </p>
+                        {isGeneratingFeedback ? (
+                          <div className="flex items-center gap-2 text-base md:text-lg">
+                            <Loader2 className="size-5 animate-spin" />
+                            <span>Generating personalized feedback...</span>
+                          </div>
+                        ) : (
+                          <p className="text-base md:text-lg leading-relaxed max-w-2xl px-4">
+                            {currentFeedback || selectedOption.feedback}
+                          </p>
+                        )}
                       </div>
                     </Card>
                   )}
@@ -290,10 +372,14 @@ export default function TestPage() {
             <Button
               size="lg"
               onClick={handleNext}
-              disabled={!selectedOption || !isFlipped}
+              disabled={!selectedOption || !isFlipped || isGeneratingFeedback}
             >
               {isLastQuestion ? 'See Results' : 'Next'}
-              <ChevronRight className="ml-2 size-4" />
+              {isGeneratingFeedback ? (
+                <Loader2 className="ml-2 size-4 animate-spin" />
+              ) : (
+                <ChevronRight className="ml-2 size-4" />
+              )}
             </Button>
           </div>
         </div>
