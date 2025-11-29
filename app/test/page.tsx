@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Textarea } from "@/components/ui/textarea";
 import { quizQuestions, type QuizOption } from "@/lib/quiz-data";
-import { ChevronLeft, ChevronRight, TreePine, Sparkles, Award, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, TreePine, Sparkles, Award, Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -25,6 +26,9 @@ export default function TestPage() {
   const [isGeneratingFeedback, setIsGeneratingFeedback] = useState(false);
   const [finalSummary, setFinalSummary] = useState<string | null>(null);
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [userFeedback, setUserFeedback] = useState<string>("");
+  const [isSavingFeedback, setIsSavingFeedback] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const question = quizQuestions[currentQuestion];
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
@@ -38,19 +42,23 @@ export default function TestPage() {
     setIsFlipped(true);
     setIsGeneratingFeedback(true);
     
-    // Show toast based on impact
-    if (option.impact === 'low') {
-      toast.success("Great choice!", {
-        description: "You're making a positive impact! 🌱",
-      });
-    } else if (option.impact === 'medium') {
-      toast.info("Good effort!", {
-        description: "There's room for improvement! 🌿",
-      });
-    } else {
-      toast.warning("Consider this...", {
-        description: "Let's find more sustainable alternatives! 🌍",
-      });
+    // Show toast based on impact (only on desktop, not mobile)
+    const isMobile = window.innerWidth < 768;
+    
+    if (!isMobile) {
+      if (option.impact === 'low') {
+        toast.success("Great choice!", {
+          description: "You're making a positive impact! 🌱",
+        });
+      } else if (option.impact === 'medium') {
+        toast.info("Good effort!", {
+          description: "There's room for improvement! 🌿",
+        });
+      } else {
+        toast.warning("Consider this...", {
+          description: "Let's find more sustainable alternatives! 🌍",
+        });
+      }
     }
 
     // Try to get AI-generated feedback
@@ -168,6 +176,45 @@ export default function TestPage() {
     return { lowImpact, mediumImpact, highImpact, score };
   };
 
+  const handleFeedbackSubmit = async () => {
+    if (!userFeedback.trim()) {
+      toast.error("Please share your thoughts!", {
+        description: "We'd love to hear what you'll do differently."
+      });
+      return;
+    }
+
+    setIsSavingFeedback(true);
+
+    try {
+      const results = calculateResults();
+      const response = await fetch('/api/save-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feedback: userFeedback,
+          timestamp: new Date().toISOString(),
+          score: results.score
+        })
+      });
+
+      if (response.ok) {
+        toast.success("Thank you for sharing!", {
+          description: "Your feedback helps us improve sustainability efforts! 🌱"
+        });
+        setFeedbackSubmitted(true);
+      } else {
+        throw new Error('Failed to save');
+      }
+    } catch (error) {
+      toast.error("Couldn't save your feedback", {
+        description: "Please try again or contact us directly."
+      });
+    } finally {
+      setIsSavingFeedback(false);
+    }
+  };
+
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'low': return 'bg-secondary text-white';
@@ -245,6 +292,50 @@ export default function TestPage() {
               </div>
             </Card>
 
+            {/* Feedback Form */}
+            <Card className="p-6 md:p-8 mb-8">
+              <h3 className="text-lg font-bold mb-2 text-foreground">
+                Thanks for engaging with this test!
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Tell us one thing (or more!) that you think you will do differently:
+              </p>
+              
+              {!feedbackSubmitted ? (
+                <div className="space-y-4">
+                  <Textarea
+                    placeholder="Share your thoughts on what you'll change this holiday season..."
+                    value={userFeedback}
+                    onChange={(e) => setUserFeedback(e.target.value)}
+                    className="min-h-[100px] resize-none"
+                    disabled={isSavingFeedback}
+                  />
+                  <Button 
+                    onClick={handleFeedbackSubmit}
+                    disabled={isSavingFeedback || !userFeedback.trim()}
+                    className="w-full sm:w-auto"
+                  >
+                    {isSavingFeedback ? (
+                      <>
+                        <Loader2 className="mr-2 size-4 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 size-4" />
+                        Submit Feedback
+                      </>
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-secondary p-4 bg-secondary/10 rounded-lg">
+                  <Sparkles className="size-5" />
+                  <p className="font-medium">Thank you for your valuable feedback! 🌱</p>
+                </div>
+              )}
+            </Card>
+
             <div className="flex gap-4 justify-center">
               <Button asChild size="lg" variant="outline">
                 <Link href="/">
@@ -261,6 +352,8 @@ export default function TestPage() {
                   setCurrentFeedback("");
                   setAnswers([]);
                   setFinalSummary(null);
+                  setUserFeedback("");
+                  setFeedbackSubmitted(false);
                   toast.info("Let's try again!", { description: "See if you can improve your score! 🎯" });
                 }}
               >
@@ -358,12 +451,13 @@ export default function TestPage() {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-4">
+          <div className="flex items-center justify-center gap-4 pt-6 mt-8 border-t">
             <Button
               variant="outline"
               size="lg"
               onClick={handlePrevious}
               disabled={isFirstQuestion}
+              className="min-w-[120px]"
             >
               <ChevronLeft className="mr-2 size-4" />
               Previous
@@ -373,6 +467,7 @@ export default function TestPage() {
               size="lg"
               onClick={handleNext}
               disabled={!selectedOption || !isFlipped || isGeneratingFeedback}
+              className="min-w-[120px]"
             >
               {isLastQuestion ? 'See Results' : 'Next'}
               {isGeneratingFeedback ? (

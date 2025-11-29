@@ -36,7 +36,7 @@ export default function RootLayout({
         <Snowfall />
         <Navbar />
         {children}
-        <Toaster />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

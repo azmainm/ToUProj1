@@ -138,6 +138,16 @@
     opacity: 1 !important;
     font-weight: 500;
   }
+  
+  /* Mobile toast positioning */
+  @media (max-width: 768px) {
+    [data-sonner-toaster] {
+      bottom: 1rem !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer utilities {
