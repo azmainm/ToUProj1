@@ -32,7 +32,7 @@ export default function Home() {
               Am I Sustainable?
             </h1>
             
-            <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground md:text-xl">
+            <p className="mx-auto mb-12 max-w-3xl text-lg text-muted-foreground md:text-xl px-4">
               Celebrate the holidays mindfully and discover how your choices impact our planet
             </p>
             

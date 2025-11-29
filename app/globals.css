@@ -120,6 +120,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Toast notification styles */
+  [data-sonner-toast] [data-description] {
+    color: oklch(0.3 0.01 20) !important;
+    opacity: 0.9 !important;
+  }
+  
+  [data-sonner-toast][data-type="success"] [data-description],
+  [data-sonner-toast][data-type="info"] [data-description],
+  [data-sonner-toast][data-type="warning"] [data-description],
+  [data-sonner-toast][data-type="error"] [data-description] {
+    color: oklch(0.25 0.01 20) !important;
+    opacity: 1 !important;
+    font-weight: 500;
+  }
 }
 
 @layer utilities {

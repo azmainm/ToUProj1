@@ -86,9 +86,9 @@ export default function TestPage() {
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
-      case 'low': return 'bg-secondary text-secondary-foreground';
-      case 'medium': return 'bg-yellow-500 text-white';
-      case 'high': return 'bg-primary text-primary-foreground';
+      case 'low': return 'bg-secondary text-white';
+      case 'medium': return 'bg-yellow-500 text-gray-900';
+      case 'high': return 'bg-primary text-white';
       default: return '';
     }
   };
@@ -217,13 +217,13 @@ export default function TestPage() {
           </div>
 
           {/* Question Card */}
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 px-4">
               {question.question}
             </h2>
 
             <div className={`flip-card ${isFlipped ? 'flipped' : ''}`}>
-              <div className="flip-card-inner">
+              <div className="flip-card-inner min-h-[400px]">
                 {/* Front of card - Options */}
                 <div className="flip-card-front">
                   <div className="space-y-4">
@@ -251,20 +251,20 @@ export default function TestPage() {
                 {/* Back of card - Feedback */}
                 <div className="flip-card-back">
                   {selectedOption && (
-                    <Card className={`p-8 h-full ${getImpactColor(selectedOption.impact)}`}>
+                    <Card className={`p-8 md:p-12 min-h-[400px] ${getImpactColor(selectedOption.impact)}`}>
                       <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
                         <div className="text-6xl">{getImpactIcon(selectedOption.impact)}</div>
                         <div>
-                          <h3 className="text-2xl font-bold mb-2">
+                          <h3 className="text-2xl md:text-3xl font-bold mb-3">
                             {selectedOption.impact === 'low' && 'Excellent Choice!'}
                             {selectedOption.impact === 'medium' && 'Good Effort!'}
                             {selectedOption.impact === 'high' && 'Room for Improvement'}
                           </h3>
-                          <div className="inline-block px-4 py-1 rounded-full bg-white/20 text-sm font-medium mb-4">
+                          <div className="inline-block px-5 py-2 rounded-full bg-white/30 text-sm font-bold mb-6">
                             {selectedOption.impact.toUpperCase()} IMPACT
                           </div>
                         </div>
-                        <p className="text-lg leading-relaxed max-w-2xl">
+                        <p className="text-base md:text-lg leading-relaxed max-w-2xl px-4">
                           {selectedOption.feedback}
                         </p>
                       </div>
@@ -276,7 +276,7 @@ export default function TestPage() {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-4">
             <Button
               variant="outline"
               size="lg"
