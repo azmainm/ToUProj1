@@ -61,8 +61,8 @@ export default function Home() {
                 className="h-20 w-auto md:h-24 object-contain animate-fade-in"
                 priority
               />
-              <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x">
-                Am I Sustainable?
+              <h1 className="text-3xl font-bold tracking-tight md:text-6xl bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x">
+                How Green is Your XMas?
               </h1>
             </div>
             

@@ -10,7 +10,7 @@ export function Navbar() {
         <Link href="/" className="flex items-center gap-2 group">
           <Sparkles className="size-6 text-primary group-hover:animate-spin transition-transform" />
           <span className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x">
-            AmISustainable?
+            My Sustainable Christmas
           </span>
         </Link>
         
