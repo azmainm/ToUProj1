@@ -44,7 +44,7 @@ const baseQuestions: QuizQuestion[] = [
   },
   {
     id: 2,
-    question: "Nom nom loads of this good stuff flying about. Which one of these best describes you:",
+    question: "Chocolate! Nom nom. Loads of this good sweet stuff flying about this month. Which one of these best describes you:",
     options: [
       {
         text: "It's not really my thing",
@@ -57,7 +57,7 @@ const baseQuestions: QuizQuestion[] = [
         feedback: "Great approach! Being mindful about chocolate sources supports sustainable farming. Look for Fair Trade and organic certifications for even better impact! 🍫"
       },
       {
-        text: "I eat all the chocolate, get it in my belly",
+        text: "I eat all the chocolate, GET IT IN MY BELLY",
         impact: 'high',
         feedback: "We love chocolate too! But mass-produced chocolate often has a large environmental footprint. Try choosing quality over quantity and look for sustainably sourced options! 🌍"
       }
