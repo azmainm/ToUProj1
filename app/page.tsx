@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Gift, TreePine, Heart, Snowflake, Star, Mail, Copy } from "lucide-react";
@@ -50,9 +51,20 @@ export default function Home() {
               Christmas Sustainability Guide
             </div>
             
-            <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x">
-              Am I Sustainable?
-            </h1>
+            {/* Logo and Title Side by Side */}
+            <div className="mb-6 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
+              <Image 
+                src="/logo.png" 
+                alt="Am I Sustainable Logo" 
+                width={160}
+                height={120}
+                className="h-20 w-auto md:h-24 object-contain animate-fade-in"
+                priority
+              />
+              <h1 className="text-5xl font-bold tracking-tight md:text-7xl bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-gradient-x">
+                Am I Sustainable?
+              </h1>
+            </div>
             
             <p className="mx-auto mb-12 max-w-3xl text-lg text-muted-foreground md:text-xl px-4">
               Celebrate the holidays mindfully and discover how your choices impact our planet

@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Am I Sustainable? | Christmas Sustainability Guide",
   description: "Discover your sustainability impact this holiday season with our interactive Christmas guide.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
