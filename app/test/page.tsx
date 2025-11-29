@@ -138,11 +138,11 @@ export default function TestPage() {
       } catch (error) {
         // Fallback to hardcoded summary
         if (score >= 70) {
-          setFinalSummary("Excellent work! You're already making fantastic sustainable choices this holiday season. Keep inspiring others with your eco-friendly practices! Share your knowledge and help others make better choices too. 🏆");
+          setFinalSummary("Excellent work! You're already making fantastic sustainable choices this holiday season. Keep inspiring others with your eco-friendly practices! Share your knowledge and help others make better choices too. 🏆  <strong>We’d love to hear what you’d do differently after taking this quiz, share a comment below.</strong>");
         } else if (score >= 40) {
-          setFinalSummary("You're on the right track! You've made some great sustainable choices, and there's opportunity to do even more. Review the feedback from the quiz and try implementing one new sustainable practice this holiday season. Every small change counts! 🌱");
+          setFinalSummary("You're on the right track! You've made some great sustainable choices, and there's opportunity to do even more. Review the feedback from the quiz and try implementing one new sustainable practice this holiday season. Every small change counts! 🌱  <strong>We’d love to hear what you’d do differently after taking this quiz, share a comment below.</strong>");
         } else {
-          setFinalSummary("Every sustainability journey starts with awareness, and you've taken the first step! Use the insights from this quiz to make small changes in your holiday habits. Even changing one or two practices can make a real difference. You've got this! 🌍");
+          setFinalSummary("Every sustainability journey starts with awareness, and you've taken the first step! Use the insights from this quiz to make small changes in your holiday habits. Even changing one or two practices can make a real difference. You've got this! 🌍 <strong>We’d love to hear what you’d do differently after taking this quiz, share a comment below.</strong>");
         }
       } finally {
         setIsGeneratingSummary(false);
@@ -285,9 +285,10 @@ export default function TestPage() {
                     <span>Generating your personalized sustainability report...</span>
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">
-                    {finalSummary}
-                  </p>
+                  <p 
+                    className="text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: finalSummary || '' }}
+                  />
                 )}
               </div>
             </Card>
