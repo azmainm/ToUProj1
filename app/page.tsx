@@ -182,8 +182,8 @@ export default function Home() {
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium mb-2 text-foreground">Created with 💚 by:</p>
                 <p className="leading-relaxed">
-                  Hristina Bojkova, Robin Rabea Wirth, Azmain Morshed,<br />
-                  Lins Karnes, Kevin Jimenez Vergara
+                  Hristina Bojkova, Robin Rabea Wirth,<br />
+                  Azmain Morshed, Lins Karnes, Kevin Jimenez Vergara
                 </p>
               </div>
             </div>
