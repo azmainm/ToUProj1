@@ -188,7 +188,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Contact Us Button with Hover Card */}
+            {/* Contact Us Button with Hover Card
             <div className="flex flex-col items-center gap-2 pt-2">
               <HoverCard openDelay={0} closeDelay={100}>
                 <HoverCardTrigger asChild>
@@ -241,7 +241,7 @@ export default function Home() {
               <p className="text-xs text-muted-foreground/60">
                 Click to see contact details
               </p>
-            </div>
+            </div> */}
             
             <div className="pt-4 border-t border-border/50">
               <p className="text-xs text-muted-foreground italic">
