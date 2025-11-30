@@ -29,6 +29,7 @@ export default function TestPage() {
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [isSavingFeedback, setIsSavingFeedback] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [quizCompletionTimestamp, setQuizCompletionTimestamp] = useState<string | null>(null);
 
   const question = quizQuestions[currentQuestion];
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
@@ -115,6 +116,23 @@ export default function TestPage() {
         duration: 5000,
       });
 
+      // Save quiz completion to Google Sheets (timestamp + score)
+      const completionTimestamp = new Date().toISOString();
+      setQuizCompletionTimestamp(completionTimestamp);
+      
+      // Save quiz completion in the background (don't wait for it)
+      fetch('/api/save-quiz-completion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timestamp: completionTimestamp,
+          score: score
+        })
+      }).catch(error => {
+        console.error('Failed to save quiz completion:', error);
+        // Silently fail - don't interrupt user experience
+      });
+
       // Try to get AI-generated summary
       try {
         const response = await fetch('/api/generate-summary', {
@@ -188,12 +206,16 @@ export default function TestPage() {
 
     try {
       const results = calculateResults();
+      
+      // Use the quiz completion timestamp if available, otherwise create new one
+      const timestampToUse = quizCompletionTimestamp || new Date().toISOString();
+      
       const response = await fetch('/api/save-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           feedback: userFeedback,
-          timestamp: new Date().toISOString(),
+          timestamp: timestampToUse,
           score: results.score
         })
       });
@@ -355,6 +377,7 @@ export default function TestPage() {
                   setFinalSummary(null);
                   setUserFeedback("");
                   setFeedbackSubmitted(false);
+                  setQuizCompletionTimestamp(null);
                   toast.info("Let's try again!", { description: "See if you can improve your score! 🎯" });
                 }}
               >
